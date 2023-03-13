@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="dao.UserDao">
+    <!--缓存配置-->
+    <cache eviction="LRU" flushInterval="30000" size="512" readOnly="true"/>
+    <!--增-->
+    <insert id="addUser" parameterType="entity.Member" useGeneratedKeys="true" keyProperty="member_id">
+        insert into ms_member (member_id,uname,password,sex,email,mobile) values (#{member_id},#{uname},#{password},#{sex},#{email},#{mobile})
+    </insert>
+    <!--查-->
+    <select id="findUsers" resultType="entity.Member" parameterType="entity.Member">
+        select * from ms_member
+        <trim prefix="where" prefixOverrides="and | or">
+            <if test="member_id != 0">
+                member_id = #{member_id}
+            </if>
+            <if test="uname != null and uname!=''">
+                and uname = #{uname}
+            </if>
+            <if test="sex = 0 || sex = 1">
+                and sex = #{sex}
+            </if>
+            <if test="email != null and email!=''">
+                and email = #{email}
+            </if>
+            <if test="mobile != null and mobile!=''">
+                and mobile = #{mobile}
+            </if>
+        </trim>
+    </select>
+    <!--改-->
+    <update id="updateUserInfo" parameterType="entity.Member">
+        update ms_member
+        <set>
+            <if test="uname!=null and uname!=''">
+                uname=#{uname},
+            </if>
+            <if test="password!=null and password!=''">
+                password=#{password},
+            </if>
+            <if test="sex = 0 || sex = 1">
+                sex=#{sex},
+            </if>
+            <if test="email!=null and email!=''">
+                email=#{email},
+            </if>
+            <if test="mobile!=null and mobile!=''">
+                mobile=#{mobile},
+            </if>
+        </set>
+        where member_id=#{member_id}
+    </update>
+    <!--删-->
+    <delete id="deleteUser" parameterType="entity.Member">
+        delete from ms_member
+        <trim prefix="where" prefixOverrides="and | or">
+            <if test="member_id!=0">
+                member_id=#{member_id}
+            </if>
+            <if test="uname!=null and uname!=''">
+                and uname=#{uname}
+            </if>
+        </trim>
+    </delete>
+</mapper>

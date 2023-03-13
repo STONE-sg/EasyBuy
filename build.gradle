@@ -1,0 +1,61 @@
+plugins {
+    id 'war'
+    id 'java'
+}
+
+group 'com.csg'
+version '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+    mavenCentral()
+}
+
+dependencies {
+    testImplementation 'junit:junit:4.11'
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.7.0'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.7.0'
+
+    //mybatis组件
+    implementation 'org.mybatis:mybatis:3.5.5'
+    //mysql数据库连接
+    implementation 'mysql:mysql-connector-java:5.1.49'
+
+    //spring依赖
+    implementation 'org.springframework:spring-aop:5.3.0'
+    implementation 'org.springframework:spring-context:5.3.0'
+    implementation 'org.springframework:spring-beans:5.3.0'
+    implementation 'org.aspectj:aspectjweaver:1.8.6'
+    //springmvc
+    implementation 'org.springframework:spring-web:5.3.0'
+    implementation 'org.springframework:spring-webmvc:5.3.0'
+
+    //json
+    implementation 'net.sf.json-lib:json-lib:2.4:jdk15'//把jdk15改为jdk8提示找不到
+    implementation group: 'com.fasterxml.jackson.core', name: 'jackson-annotations', version: '2.11.3'
+    implementation group: 'com.fasterxml.jackson.core', name: 'jackson-core', version: '2.11.3'
+    implementation group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.11.3'
+
+    //tomcat
+    implementation 'org.apache.tomcat:tomcat-servlet-api:9.0.53'//把9.0.38改为9.0.53
+    implementation group: 'javax.servlet', name: 'javax.servlet-api', version: '3.1.0'
+
+    //SSM集成开发依赖包
+    implementation 'org.mybatis:mybatis-spring:2.0.6'
+    implementation 'org.springframework:spring-jdbc:5.3.0'
+    implementation 'org.springframework:spring-test:5.3.0'
+    implementation 'commons-dbcp:commons-dbcp:1.4'
+
+    //验证码
+//    implementation group: 'com.google.code.kaptcha', name: 'kaptcha', version: '2.3'
+    implementation fileTree(dir: 'lib', includes: ['*jar'])
+
+    //上传图片
+    implementation group: 'commons-fileupload', name: 'commons-fileupload', version: '1.2'
+    implementation group: 'commons-io', name: 'commons-io', version: '1.4'
+
+}
+
+test {
+    useJUnitPlatform()
+}

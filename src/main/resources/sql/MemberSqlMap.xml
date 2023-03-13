@@ -1,0 +1,302 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="dao.MemberDao">
+  <!--缓存配置-->
+  <cache eviction="LRU" flushInterval="30000" size="512" readOnly="true"/>
+  <!--增-->
+  <insert id="addMember" parameterType="entity.Member" useGeneratedKeys="true" keyProperty="member_id">
+    insert into ms_member (uname,password) values (#{uname},#{password})
+  </insert>
+  <!--查-->
+  <select id="findMemberByUname" resultType="entity.Member" parameterType="entity.Member">
+    select * from ms_member where uname=#{uname}
+  </select>
+  <!--改-->
+  <update id="updateMemberInfo" parameterType="entity.Member">
+    update ms_member
+    <set>
+      <if test="uname!=null and uname!=''">
+        uname=#{uname},
+      </if>
+      <if test="password!=null and password!=''">
+        password=#{password},
+      </if>
+    </set>
+    where member_id=#{member_id}
+  </update>
+  <!--删-->
+  <delete id="deleteMember" parameterType="entity.Member">
+    delete from ms_member
+    <trim prefix="where" prefixOverrides="and | or">
+      <if test="member_id!=0">
+        member_id=#{member_id}
+      </if>
+      <if test="uname!=null and uname!=''">
+        and uname=#{uname}
+      </if>
+    </trim>
+  </delete>
+</mapper>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!--<?xml version="1.0" encoding="UTF-8"?>-->
+<!--<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">-->
+<!--<mapper namespace="dao.MemberDao">-->
+<!--  <resultMap id="BaseResultMap" type="entity.Member">-->
+<!--    <id column="member_id" jdbcType="INTEGER" property="memberId" />-->
+<!--    <result column="uname" jdbcType="VARCHAR" property="uname" />-->
+<!--    <result column="password" jdbcType="VARCHAR" property="password" />-->
+<!--    <result column="email" jdbcType="VARCHAR" property="email" />-->
+<!--    <result column="sex" jdbcType="SMALLINT" property="sex" />-->
+<!--    <result column="mobile" jdbcType="VARCHAR" property="mobile" />-->
+<!--    <result column="regtime" jdbcType="TIMESTAMP" property="regtime" />-->
+<!--    <result column="lastlogin" jdbcType="TIMESTAMP" property="lastlogin" />-->
+<!--    <result column="image" jdbcType="VARCHAR" property="image" />-->
+<!--  </resultMap>-->
+<!--  <sql id="Base_Column_List">-->
+<!--    member_id, uname, `password`, email, sex, mobile, regtime, lastlogin, image-->
+<!--  </sql>-->
+
+<!--  &lt;!&ndash;查 (输出所有数据)&ndash;&gt;-->
+<!--  <select id="findAll" resultMap="BaseResultMap">-->
+<!--    select * from ms_member-->
+<!--  </select>-->
+
+<!--  &lt;!&ndash; 根据uname查询 &ndash;&gt;-->
+<!--  <select id="findByUname" resultMap="BaseResultMap" parameterType="string">-->
+<!--    select * from ms_member where uname = #{uname}-->
+<!--  </select>-->
+
+<!--  <update id="dynamicUpdate" parameterType="entity.Member">-->
+<!--    update ms_member-->
+<!--    <set>-->
+<!--      <if test="uname != null">-->
+<!--        uname = #{uname},-->
+<!--      </if>-->
+<!--      <if test="password != null">-->
+<!--        password = #{password},-->
+<!--      </if>-->
+<!--      <if test="email != null">-->
+<!--        email = #{email},-->
+<!--      </if>-->
+<!--      <if test="sex != null">-->
+<!--        sex = #{sex},-->
+<!--      </if>-->
+<!--      <if test="mobile != null">-->
+<!--        mobile = #{mobile},-->
+<!--      </if>-->
+<!--      <if test="regtime != null">-->
+<!--        regtime = #{regtime},-->
+<!--      </if>-->
+<!--      <if test="lastlogin != null">-->
+<!--        lastlogin = #{lastlogin},-->
+<!--      </if>-->
+<!--      <if test="image != null">-->
+<!--        image = #{image},-->
+<!--      </if>-->
+<!--    </set>-->
+<!--    where member_id = #{memberId}-->
+<!--  </update>-->
+
+
+<!--  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">-->
+<!--    select -->
+<!--    <include refid="Base_Column_List" />-->
+<!--    from ms_member-->
+<!--    where member_id = #{memberId,jdbcType=INTEGER}-->
+<!--  </select>-->
+<!--  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">-->
+<!--    delete from ms_member-->
+<!--    where member_id = #{memberId,jdbcType=INTEGER}-->
+<!--  </delete>-->
+<!--  &lt;!&ndash;增&ndash;&gt;-->
+<!--  <insert id="addUser" keyColumn="member_id" keyProperty="memberId" parameterType="entity.Member" useGeneratedKeys="true">-->
+<!--    insert into ms_member (uname, password, email,-->
+<!--      sex, mobile, regtime, -->
+<!--      lastlogin, image)-->
+<!--    values (#{uname,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR}, -->
+<!--      #{sex,jdbcType=SMALLINT}, #{mobile,jdbcType=VARCHAR}, #{regtime,jdbcType=TIMESTAMP}, -->
+<!--      #{lastlogin,jdbcType=TIMESTAMP}, #{image,jdbcType=VARCHAR})-->
+<!--  </insert>-->
+<!--  <insert id="insertSelective" keyColumn="member_id" keyProperty="memberId" parameterType="entity.Member" useGeneratedKeys="true">-->
+<!--    insert into ms_member-->
+<!--    <trim prefix="(" suffix=")" suffixOverrides=",">-->
+<!--      <if test="uname != null">-->
+<!--        uname,-->
+<!--      </if>-->
+<!--      <if test="password != null">-->
+<!--        `password`,-->
+<!--      </if>-->
+<!--      <if test="email != null">-->
+<!--        email,-->
+<!--      </if>-->
+<!--      <if test="sex != null">-->
+<!--        sex,-->
+<!--      </if>-->
+<!--      <if test="mobile != null">-->
+<!--        mobile,-->
+<!--      </if>-->
+<!--      <if test="regtime != null">-->
+<!--        regtime,-->
+<!--      </if>-->
+<!--      <if test="lastlogin != null">-->
+<!--        lastlogin,-->
+<!--      </if>-->
+<!--      <if test="image != null">-->
+<!--        image,-->
+<!--      </if>-->
+<!--    </trim>-->
+<!--    <trim prefix="values (" suffix=")" suffixOverrides=",">-->
+<!--      <if test="uname != null">-->
+<!--        #{uname,jdbcType=VARCHAR},-->
+<!--      </if>-->
+<!--      <if test="password != null">-->
+<!--        #{password,jdbcType=VARCHAR},-->
+<!--      </if>-->
+<!--      <if test="email != null">-->
+<!--        #{email,jdbcType=VARCHAR},-->
+<!--      </if>-->
+<!--      <if test="sex != null">-->
+<!--        #{sex,jdbcType=SMALLINT},-->
+<!--      </if>-->
+<!--      <if test="mobile != null">-->
+<!--        #{mobile,jdbcType=VARCHAR},-->
+<!--      </if>-->
+<!--      <if test="regtime != null">-->
+<!--        #{regtime,jdbcType=TIMESTAMP},-->
+<!--      </if>-->
+<!--      <if test="lastlogin != null">-->
+<!--        #{lastlogin,jdbcType=TIMESTAMP},-->
+<!--      </if>-->
+<!--      <if test="image != null">-->
+<!--        #{image,jdbcType=VARCHAR},-->
+<!--      </if>-->
+<!--    </trim>-->
+<!--  </insert>-->
+<!--  &lt;!&ndash;改&ndash;&gt;-->
+<!--  <update id="updateUserInfo" parameterType="entity.Member">-->
+<!--    update ms_member-->
+<!--    <set>-->
+<!--      <if test="uname != null">-->
+<!--        uname = #{uname,jdbcType=VARCHAR},-->
+<!--      </if>-->
+<!--      <if test="password != null">-->
+<!--        `password` = #{password,jdbcType=VARCHAR},-->
+<!--      </if>-->
+<!--      <if test="email != null">-->
+<!--        email = #{email,jdbcType=VARCHAR},-->
+<!--      </if>-->
+<!--      <if test="sex != null">-->
+<!--        sex = #{sex,jdbcType=SMALLINT},-->
+<!--      </if>-->
+<!--      <if test="mobile != null">-->
+<!--        mobile = #{mobile,jdbcType=VARCHAR},-->
+<!--      </if>-->
+<!--      <if test="regtime != null">-->
+<!--        regtime = #{regtime,jdbcType=TIMESTAMP},-->
+<!--      </if>-->
+<!--      <if test="lastlogin != null">-->
+<!--        lastlogin = #{lastlogin,jdbcType=TIMESTAMP},-->
+<!--      </if>-->
+<!--      <if test="image != null">-->
+<!--        image = #{image,jdbcType=VARCHAR},-->
+<!--      </if>-->
+<!--    </set>-->
+<!--    where member_id = #{memberId,jdbcType=INTEGER}-->
+<!--  </update>-->
+<!--  <update id="updateByPrimaryKey" parameterType="entity.Member">-->
+<!--    update ms_member-->
+<!--    set uname = #{uname,jdbcType=VARCHAR},-->
+<!--      `password` = #{password,jdbcType=VARCHAR},-->
+<!--      email = #{email,jdbcType=VARCHAR},-->
+<!--      sex = #{sex,jdbcType=SMALLINT},-->
+<!--      mobile = #{mobile,jdbcType=VARCHAR},-->
+<!--      regtime = #{regtime,jdbcType=TIMESTAMP},-->
+<!--      lastlogin = #{lastlogin,jdbcType=TIMESTAMP},-->
+<!--      image = #{image,jdbcType=VARCHAR}-->
+<!--    where member_id = #{memberId,jdbcType=INTEGER}-->
+<!--  </update>-->
+<!--  &lt;!&ndash;查&ndash;&gt;-->
+<!--  <select id="findUser" resultType="entity.Member" parameterType="entity.Member">-->
+<!--    select * from ms_member-->
+<!--    <trim prefix="where" prefixOverrides="and | or">-->
+<!--      <if test="member_id != 0">-->
+<!--        member_id = #{member_id}-->
+<!--      </if>-->
+<!--      <if test="uname != null">-->
+<!--        and uname = #{uname}-->
+<!--      </if>-->
+<!--      <if test="email != null">-->
+<!--        and email = #{email}-->
+<!--      </if>-->
+<!--      <if test="sex != null">-->
+<!--        and sex = #{sex}-->
+<!--      </if>-->
+<!--      <if test="mobile != null">-->
+<!--        and mobile = #{mobile}-->
+<!--      </if>-->
+<!--      <if test="regtime != null">-->
+<!--        and regtime = #{regtime}-->
+<!--      </if>-->
+<!--      <if test="lastlogin != null">-->
+<!--        and lastlogin = #{lastlogin}-->
+<!--      </if>-->
+<!--      <if test="image != null">-->
+<!--        and image = #{image}-->
+<!--      </if>-->
+<!--    </trim>-->
+<!--  </select>-->
+<!--  &lt;!&ndash;删&ndash;&gt;-->
+<!--  <delete id="deleteUser" parameterType="entity.Member">-->
+<!--    delete from ms_member-->
+<!--    <trim prefix="where" prefixOverrides="and | or">-->
+<!--      <if test="member_id != 0">-->
+<!--        member_id=#{member_id}-->
+<!--      </if>-->
+<!--      <if test="uname != null">-->
+<!--        and uname = #{uname}-->
+<!--      </if>-->
+<!--      <if test="email != null">-->
+<!--        and email = #{email}-->
+<!--      </if>-->
+<!--      <if test="sex != null">-->
+<!--        and sex = #{sex}-->
+<!--      </if>-->
+<!--      <if test="mobile != null">-->
+<!--        and mobile = #{mobile}-->
+<!--      </if>-->
+<!--      <if test="regtime != null">-->
+<!--        and regtime = #{regtime}-->
+<!--      </if>-->
+<!--      <if test="lastlogin != null">-->
+<!--        and lastlogin = #{lastlogin}-->
+<!--      </if>-->
+<!--      <if test="image != null">-->
+<!--        and image = #{image}-->
+<!--      </if>-->
+<!--    </trim>-->
+<!--  </delete>-->
+<!--</mapper>-->

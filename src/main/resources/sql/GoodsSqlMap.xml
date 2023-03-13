@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="dao.GoodsDao">
+  <!--缓存配置-->
+  <cache eviction="LRU" flushInterval="30000" size="512" readOnly="true"/>
+  <!--增-->
+  <insert id="addGoods" parameterType="entity.Goods" useGeneratedKeys="true" keyProperty="goods_id">
+    insert into ms_goods (goods_id,name,cat_id,goods_pic,price,description)
+    values (#{goods_id},#{name},#{cat_id},#{goods_pic},#{price},#{description})
+  </insert>
+  <!--查-->
+  <select id="findGoods" resultType="entity.Goods" parameterType="entity.Goods">
+    select * from ms_goods
+    <trim prefix="where" prefixOverrides="and | or">
+      <if test="goods_id != 0">
+        goods_id = #{goods_id}
+      </if>
+      <if test="name != null and name!=''">
+        and name = #{name}
+      </if>
+      <if test="cat_id != 0">
+        and cat_id = #{cat_id}
+      </if>
+      <if test="goods_pic != null and goods_pic!=''">
+        and goods_pic = #{goods_pic}
+      </if>
+      <if test="price != null and price!=''">
+        and price = #{price}
+      </if>
+      <if test="description != null and description!=''">
+        and description = #{description}
+      </if>
+    </trim>
+  </select>
+  <!--改-->
+  <update id="updateGoodsInfo" parameterType="entity.Goods">
+    update ms_goods
+    <set>
+      <if test="name!=null and name!=''">
+        name=#{name},
+      </if>
+      <if test="cat_id != 0">
+        cat_id = #{cat_id},
+      </if>
+      <if test="goods_pic != null and goods_pic!=''">
+        goods_pic = #{goods_pic},
+      </if>
+      <if test="price != null and price!=''">
+        price = #{price},
+      </if>
+      <if test="description != null and description!=''">
+        description = #{description}
+      </if>
+    </set>
+    where goods_id=#{goods_id}
+  </update>
+  <!--删-->
+  <delete id="deleteGoods" parameterType="entity.Goods">
+    delete from ms_goods
+    <trim prefix="where" prefixOverrides="and | or">
+      <if test="goods_id != 0">
+        goods_id = #{goods_id}
+      </if>
+      <if test="name != null">
+        and name = #{name}
+      </if>
+      <if test="cat_id != 0">
+        and cat_id = #{cat_id}
+      </if>
+      <if test="goods_pic != null">
+        and goods_pic = #{goods_pic}
+      </if>
+      <if test="price != null">
+        and price = #{price}
+      </if>
+      <if test="description != null">
+        and description = #{description}
+      </if>
+    </trim>
+  </delete>
+</mapper>

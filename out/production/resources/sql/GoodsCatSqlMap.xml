@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="dao.GoodsCatDao">
+    <!--缓存配置-->
+    <cache eviction="LRU" flushInterval="30000" size="512" readOnly="true"/>
+<!--    <select id="findById" parameterType="int" resultType="entity.GoodsCat">-->
+<!--        select * from ms_goods_cat where cat_id=#{cat_id}-->
+<!--    </select>-->
+<!--    &lt;!&ndash;新增分类&ndash;&gt;-->
+<!--    <select id="findByName" parameterType="string" resultType="entity.GoodsCat">-->
+<!--        select * from ms_goods_cat where name=#{name}-->
+<!--    </select>-->
+<!--    <select id="findByCatPathDESC" parameterType="int" resultType="entity.GoodsCat">-->
+<!--        select * from ms_goods_cat where length(cat_path)=#{length} order by cat_id desc-->
+<!--    </select>-->
+<!--    <select id="findByParentIdDESC" parameterType="int" resultType="entity.GoodsCat">-->
+<!--        select * from ms_goods_cat where parent_id=#{parent_id} order by cat_id desc-->
+<!--    </select>-->
+<!--    <insert id="addCat" parameterType="entity.GoodsCat" useGeneratedKeys="true" keyProperty="cat_id">-->
+<!--        insert into ms_goods_cat (name,parent_id,cat_path,goods_count,sort,type_id,list_show,modifytime)-->
+<!--         values (#{name},#{parent_id},#{cat_path},#{goods_count},#{sort},#{type_id},#{list_show},#{modifytime})-->
+<!--    </insert>-->
+
+
+
+    <!--goodsCat的CRUD-->
+
+    <!--增-->
+    <insert id="addGoodsCat" parameterType="entity.GoodsCat" useGeneratedKeys="true" keyProperty="cat_id">
+        insert into ms_goods_cat (cat_id,name,parent_id)
+        values (#{cat_id},#{name},#{parent_id})
+    </insert>
+<!--    <insert id="addGoodsCat" parameterType="entity.GoodsCat" useGeneratedKeys="true" keyProperty="cat_id">-->
+<!--        insert into ms_goods_cat (cat_id,name,parent_id,cat_path,goods_count,sort,type_id,list_show,image,creatime,modifytime)-->
+<!--         values (#{cat_id},#{name},#{parent_id},#{cat_path},#{goods_count},#{sort},#{type_id},#{list_show},#{image},#{creatime},#{modifytime})-->
+<!--    </insert>-->
+    <!--查-->
+    <select id="findGoodsCat" resultType="entity.GoodsCat" parameterType="entity.GoodsCat">
+        select * from ms_goods_cat
+        <trim prefix="where" prefixOverrides="and | or">
+            <if test="cat_id!=0">
+                cat_id=#{cat_id}
+            </if>
+            <if test="name!=null and name!=''">
+                and name=#{name}
+            </if>
+<!--            <if test="parent_id!=null and parent_id!=''">-->
+<!--                and parent_id=#{parent_id}-->
+<!--            </if>-->
+        </trim>
+    </select>
+    <!--改-->
+    <update id="updateGoodsCatInfo" parameterType="entity.GoodsCat">
+        update ms_goods_cat
+        <set>
+            <if test="name!=null and name!=''">
+                name=#{name}
+            </if>
+        </set>
+        where cat_id=#{cat_id}
+    </update>
+    <!--删-->
+    <delete id="deleteGoodsCat" parameterType="entity.GoodsCat">
+        delete from ms_goods_cat
+        <trim prefix="where" prefixOverrides="and | or">
+            <if test="cat_id!=0">
+                cat_id=#{cat_id}
+            </if>
+            <if test="name!=null and name!=''">
+                and name=#{name}
+            </if>
+        </trim>
+    </delete>
+
+</mapper>
